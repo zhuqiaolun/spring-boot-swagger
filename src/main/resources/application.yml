@@ -1,0 +1,47 @@
+# Tomcat
+server:
+  port: 8022
+  servlet:
+    context-path: /spring-boot-swagger
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      # 最大线程数
+      max: 1000
+      # 最小线程数
+      min-spare: 30
+    # 队列长度
+    accept-count: 50
+    # 最大链接数
+    max-connections: 1000
+    # 链接建立超时时间 ms
+    connection-timeout: 50000
+
+spring:
+  application:
+    name: spring-boot-swagger
+  profiles:
+    active: mybatis
+  jackson:
+    default-property-inclusion: non_null
+
+  # 配置模版引擎
+  thymeleaf:
+    # 是否启用模板缓存,开发时关闭缓存,不然没法看到实时页面
+    cache: false
+    # 是否检查模板位置是否存在。
+    check-template: true
+    # 是否为Web框架启用Thymeleaf视图分辨率。
+    enabled: true
+    # 编码格式, 默认UTF-8
+    encoding: UTF-8
+    # 应用于模板的模板模式。另请参阅Thymeleaf的TemplateMode枚举。
+    mode: HTML
+    servlet:
+      content-type: text/html
+    # 后缀 默认 .html
+    suffix: .html
+    # 模板文件存放位置  , 默认 classpath:/templates/
+    prefix: classpath:/templates/
+  freemarker:
+    checkTemplateLocation: false
