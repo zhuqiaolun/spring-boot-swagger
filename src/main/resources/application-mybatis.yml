@@ -1,7 +1,7 @@
 spring:
   # 数据库连接
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/spring_boot_swagger?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&allowMultiQueries=true&autoReconnect=true&useSSL=false&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
     username: root
     password: root
