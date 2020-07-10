@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/root.html">
+<head>
+    <title>配置</title>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+    <div style="padding:15px;">
+        <div class="demoTable">
+            <form class="layui-form" action="" lay-filter="configForm" id="configForm">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <label>
+                                <select name="suProject" id="suProject" lay-search="" lay-filter="suProjectSelect">
+                                    <option value="">项目</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <label>
+                                <select name="suTags" id="suTags" lay-search="">
+                                    <option value="">标签</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" id="suOperationid" name="suOperationid" placeholder="方法名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <label>
+                                <select name="suMethod" id="suMethod" lay-search="">
+                                    <option value="">http方法</option>
+                                    <option value="get">get</option>
+                                    <option value="post">post</option>
+                                    <option value="put">put</option>
+                                    <option value="delete">delete</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn searchBtn" data-type="searchBtn">搜索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-hide" id="lay_table_swagger_config" lay-filter="lay_table_swagger_config"></table>
+    </div>
+</section>
+<section layout:fragment="script" th:remove="tag">
+    <script id="toolbarDemo" type="text/html">
+        <div class="layui-btn-container">
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" lay-event="addBtn">添加</button>
+        </div>
+    </script>
+    <script id="barDemo" type="text/html">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="look">查看</a>
+    </script>
+    <script>
+        //JavaScript代码区域
+        layui.use(['element', 'table'], function () {
+            var $ = layui.$, element = layui.element, table = layui.table, form = layui.form ;
+            form.on('select(suProjectSelect)', function(data){
+                $.ajax({
+                    url: 'tags/list?t=' + new Date().getTime(),
+                    type: "POST",
+                    data: JSON.stringify({'suProjectId':$("#suProject").val()}),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    beforeSend: function () {
+                        layer.load(2);
+                    },
+                    success: function (data) {
+                        layer.closeAll();
+                        if (data.success) {
+                            var suTags = $("#suTags");
+                            suTags.empty();
+                            suTags.append('<option value="">标签</option>');
+                            for(var key in data.data){
+                                suTags.append('<option value='+key+'>'+data.data[key]+'</option>');
+                            }
+                            form.render();
+                        } else {
+                            alert("加载标签错误...")
+                        }
+                    },
+                    error: function () {
+                        layer.closeAll();
+                        alert("加载标签异常...")
+                    }
+                });
+            });
+            //方法级渲染
+            table.render({
+                elem: '#lay_table_swagger_config'
+                , url: 'config/listPage?t=' + new Date().getTime()
+                , toolbar: '#toolbarDemo'
+                , title: 'swagger配置表'
+                , method: 'post' //如果无需自定义HTTP类型，可不加该参数
+                , contentType: 'application/json'
+                , cols: [
+                    [
+                        {field: 'su_id', title: 'ID', width: 80 }
+                        , {field: 'si_title', title: '项目' ,width: 200}
+                        , {field: 'st_name', title: '标签', width: 120 }
+                        , {field: 'su_operationId', title: '方法名', width: 200 }
+                        , {field: 'su_url', title: '请求url' ,width: 250}
+                        , {field: 'su_method', title: 'http方法', width: 100 }
+                        , {field: 'su_summary', title: '标题' }
+                        , {field: 'su_description', title: '描述' }
+                        , {field: 'su_createtime', title: '创建时间',width: 180 ,templet : "<span>{{layui.util.toDateString(d.su_createtime, 'yyyy-MM-dd HH:mm:ss')}}</span>" }
+                        , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 180}
+                    ]
+                ]
+                , page: true
+                , height: 'full-200'
+                , request: {
+                    pageName: 'pageIndex' //页码的参数名称，默认：page
+                    , limitName: 'pageCount' //每页数据量的参数名，默认：limit
+                }
+                , done: function (res, curr, count) {
+                    var suProject = $("#suProject");
+                    suProject.empty();
+                    suProject.append('<option value="">项目</option>');
+                    for(var i in res.suProjects){
+                        if(parseInt(res.suProjects[i].siId) === parseInt(res.suProjectId)){
+                            suProject.append('<option selected="selected" value='+res.suProjects[i].siId+'>'+res.suProjects[i].siTitle+'</option>');
+                        }else{
+                            suProject.append('<option value='+res.suProjects[i].siId+'>'+res.suProjects[i].siTitle+'</option>');
+                        }
+                    }
+                    form.render();
+                }
+            });
+            //执行表格数据重载
+            var configTableReload = function () {
+                table.reload('lay_table_swagger_config', {
+                    page: { curr: 1 }
+                    , where: {
+                        'suProjectId':$("#suProject").val(),
+                        'suTags': $('#suTags').val(),
+                        'suOperationid': $('#suOperationid').val(),
+                        'suMethod': $('#suMethod').val()
+                    }
+                }, 'data');
+            };
+            $('.demoTable .layui-btn').on('click', function(){
+                switch($(this).data('type')){
+                    case 'searchBtn':
+                        configTableReload();
+                        break;
+                }
+            });
+            //监听头工具栏事件
+            table.on('toolbar(lay_table_swagger_config)', function(obj){
+                switch(obj.event){
+                    case 'addBtn':
+                        layer.msg('待开发···');
+                        break;
+                }
+            });
+            //监听行工具栏事件
+            table.on('tool(lay_table_swagger_config)', function (obj) {
+                var data = obj.data;
+                switch (obj.event) {
+                    case 'look':
+                        window.open("swagger-ui/index"+data.su_project+"#/"+data.st_name+"/"+data.su_operationId,"_self");
+                        break;
+                    case 'del':
+                        var delHtml = '项目：'+data.si_title+'<br/>'+'方法：'+data.su_operationId+'<br/>'+'标题：'+data.su_summary+'<br/>';
+                        layer.confirm(delHtml, {
+                            title: '是否删除该配置【'+data.su_id+'】？',
+                            btn: ['删除', '取消']
+                        }, function () {
+                            delConfig({'suId': data.su_id});
+                        }, function () {
+                            layer.closeAll();
+                        });
+                        break;
+                    case 'edit':
+                        layer.msg('待开发···');
+                        break;
+                }
+            });
+            // 删除
+            var delConfig = function (jsonParam) {
+                $.ajax({
+                    url: 'config/delConfig?t=' + new Date().getTime(),
+                    type: "POST",
+                    data: JSON.stringify(jsonParam),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    beforeSend: function () {
+                        layer.load(2);
+                    },
+                    success: function (data) {
+                        layer.closeAll();
+                        if (data.success) {
+                            layer.msg('操作成功', {icon: 1, time: 800}, function () {
+                                configTableReload();
+                            });
+                        } else {
+                            alert("删除配置错误...")
+                        }
+                    },
+                    error: function () {
+                        layer.closeAll();
+                        alert("删除配置异常...")
+                    }
+                });
+            };
+        });
+    </script>
+</section>
+</body>
+</html>

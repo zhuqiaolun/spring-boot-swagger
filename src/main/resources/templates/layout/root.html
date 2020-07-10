@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">spring-boot-swagger</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" th:href="@{/layui-v2.5.5/css/layui.css}" media="all" />
+    </head>
+    <body class="layui-layout-body">
+        <div class="layui-layout layui-layout-admin">
+            <section layout:fragment="nav">
+                <div class="layui-header">
+                    <div class="layui-logo" >
+                        <a th:href="@{/}" style="color: #e40b0b;">swagger管理平台</a>
+                    </div>
+                    <ul class="layui-nav layui-layout-left">
+                        <li class="layui-nav-item">
+                            <a href="" th:href="@{/swagger}">项目</a>
+                        </li>
+                        <li class="layui-nav-item">
+                            <a href="" th:href="@{/tags}">标签</a>
+                        </li>
+                        <li class="layui-nav-item">
+                            <a href="" th:href="@{/config}">配置</a>
+                        </li>
+                        <li class="layui-nav-item">
+                            <a href="" th:href="@{/demo}">示例</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section layout:fragment="content">
+                <!-- body区域 -->
+            </section>
+            <section layout:fragment="footer">
+                <!-- footer区域 -->
+                <footer>
+                    <div class="layui-footer" style="left:0;text-align: center;">
+                        <!-- 底部固定区域 -->
+                        © zhuqiaolun.com - 底部固定区域
+                    </div>
+                </footer>
+            </section>
+        </div>
+        <script th:src="@{/jquery/jquery-2.1.4.min.js}"></script>
+        <script th:src="@{/jquery/jqthumb.js}"></script>
+        <script th:src="@{/layui-v2.5.5/layui.all.js}"></script>
+        <section layout:fragment="script"><!-- script区域 --></section>
+    </body>
+</html>

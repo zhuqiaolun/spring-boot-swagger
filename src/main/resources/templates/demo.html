@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/root.html">
+<head>
+    <title>示例</title>
+    <base th:href="@{/}">
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+    <div style="padding:15px;">
+        待完成···
+    </div>
+</section>
+</body>
+</html>

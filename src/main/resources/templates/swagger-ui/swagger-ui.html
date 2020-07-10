@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/root.html">
+<head>
+    <meta charset="UTF-8">
+    <title>spring-boot-swagger</title>
+    <link rel="stylesheet" th:href="@{/swagger-ui/swagger-ui.css}" type="text/css">
+    <link href="" rel="icon" sizes="32x32" th:href="@{/swagger-ui/favicon-32x32.png}" type="image/png"/>
+    <link href="" rel="icon" sizes="16x16" th:href="@{/swagger-ui/favicon-16x16.png}" type="image/png"/>
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+        .swagger-ui .topbar {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+    <div class="layui-body" style="top: 0;left: 0;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <div id="swagger-ui"></div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="script" th:remove="tag">
+    <script src="" th:src="@{/swagger-ui/swagger-ui-bundle.js}"></script>
+    <script src="" th:src="@{/swagger-ui/swagger-ui-standalone-preset.js}"></script>
+    <script th:inline="javascript">
+        var indexId = [[${index}]];
+        window.onload = function () {
+            // Begin Swagger UI call region
+            window.ui = SwaggerUIBundle({
+                url: "../swagger-ui/"+indexId+"/data.json",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout"
+            });
+            // End Swagger UI call region
+        }
+    </script>
+</section>
+</body>
+</html>

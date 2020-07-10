@@ -16,7 +16,27 @@ public class IndexController {
 
     @GetMapping
     public String index() {
-        return "swagger-ui/swagger";
+        return "index";
+    }
+
+    @GetMapping(value = "swagger")
+    public String swagger() {
+        return "swagger";
+    }
+
+    @GetMapping(value = "tags")
+    public String tags() {
+        return "tags";
+    }
+
+    @GetMapping(value = "config")
+    public String config() {
+        return "config";
+    }
+
+    @GetMapping(value = "demo")
+    public String demo() {
+        return "demo";
     }
 
 }

@@ -5,9 +5,10 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.demon.springbootswagger.database.entity.SystemSwaggerUrl">
         <id column="su_id" property="suId" />
+        <result column="su_project" property="suProject" />
+        <result column="su_tags" property="suTags" />
         <result column="su_url" property="suUrl" />
         <result column="su_method" property="suMethod" />
-        <result column="su_tags" property="suTags" />
         <result column="su_summary" property="suSummary" />
         <result column="su_description" property="suDescription" />
         <result column="su_operationId" property="suOperationid" />
@@ -22,7 +23,48 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        su_id, su_url, su_method, su_tags, su_summary, su_description, su_operationId, su_consumes, su_produces, su_parameters, su_responses, su_security, su_deprecated, su_createtime
+        su_id,su_project, su_tags, su_url, su_method, su_summary, su_description, su_operationId, su_consumes, su_produces, su_parameters, su_responses, su_security, su_deprecated, su_createtime
     </sql>
+
+    <select id="selectSystemSwaggerUrlListPage" parameterType="map" resultType="java.util.Map">
+        SELECT
+            system_swagger_url.su_id,
+            system_swagger_url.su_project,
+            system_swagger_url.su_tags,
+            system_swagger_url.su_url,
+            system_swagger_url.su_method,
+            system_swagger_url.su_summary,
+            system_swagger_url.su_description,
+            system_swagger_url.su_operationId,
+            system_swagger_url.su_consumes,
+            system_swagger_url.su_produces,
+            system_swagger_url.su_parameters,
+            system_swagger_url.su_responses,
+            system_swagger_url.su_security,
+            system_swagger_url.su_deprecated,
+            system_swagger_url.su_createtime,
+            system_swagger_info.si_title,
+            system_swagger_tags.st_id,
+            system_swagger_tags.st_name,
+            system_swagger_info.si_id
+        FROM
+            system_swagger_url
+        LEFT JOIN system_swagger_info ON system_swagger_url.su_project = system_swagger_info.si_id
+        LEFT JOIN system_swagger_tags ON system_swagger_url.su_tags = system_swagger_tags.st_id
+        <where>
+            <if test="params.suProjectId != null and params.suProjectId != '' ">
+                and  system_swagger_url.su_project = #{params.suProjectId}
+            </if>
+            <if test="params.suTags != null and params.suTags != '' ">
+                and  system_swagger_url.su_tags = #{params.suTags}
+            </if>
+            <if test="params.suOperationid != null and params.suOperationid != '' ">
+                and system_swagger_url.su_operationId = #{params.suOperationid}
+            </if>
+            <if test="params.suMethod != null and params.suMethod != '' ">
+                and  system_swagger_url.su_method = #{params.suMethod}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -1,14 +1,18 @@
 package com.demon.springbootswagger.database.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -28,6 +32,18 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     @TableId(value = "su_id", type = IdType.AUTO)
     private Integer suId;
 
+    /**
+     * 项目名
+     */
+    @TableField("su_project")
+    private String suProject;
+
+    /**
+     * 标签
+     */
+    @TableField("su_tags")
+    private String suTags;
+
     @TableField("su_url")
     private String suUrl;
 
@@ -37,11 +53,7 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     @TableField("su_method")
     private String suMethod;
 
-    /**
-     * 标签
-     */
-    @TableField("su_tags")
-    private String suTags;
+
 
     /**
      * 标题
@@ -97,7 +109,11 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     @TableField("su_deprecated")
     private Byte suDeprecated;
 
+    /** DateTimeFormat页面写入数据库时格式化，JSONField 数据库导出页面时json格式化 */
     @TableField("su_createtime")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Shanghai")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date suCreatetime;
 
 

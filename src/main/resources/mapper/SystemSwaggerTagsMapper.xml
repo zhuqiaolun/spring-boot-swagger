@@ -5,14 +5,35 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.demon.springbootswagger.database.entity.SystemSwaggerTags">
         <id column="st_id" property="stId" />
+        <result column="st_project" property="stProject" />
         <result column="st_name" property="stName" />
         <result column="st_description" property="stDescription" />
+        <result column="st_remark" property="stRemark" />
         <result column="st_createtime" property="stCreatetime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        st_id, st_name, st_description, st_createtime
+        st_id, st_project, st_name, st_description, st_remark, st_createtime
     </sql>
+    <select id="selectSystemSwaggerTagsListPage" parameterType="map" resultType="java.util.Map">
+        SELECT
+            system_swagger_tags.st_id,
+            system_swagger_tags.st_project,
+            system_swagger_tags.st_name,
+            system_swagger_tags.st_description,
+            system_swagger_tags.st_remark,
+            system_swagger_tags.st_createtime,
+            system_swagger_info.si_title,
+            system_swagger_info.si_id
+        FROM
+            system_swagger_tags
+        LEFT JOIN system_swagger_info ON system_swagger_tags.st_project = system_swagger_info.si_id
+        <where>
+            <if test="params.stProjectId != null and params.stProjectId != '' ">
+                system_swagger_tags.st_project = #{params.stProjectId}
+            </if>
+        </where>
+    </select>
 
 </mapper>

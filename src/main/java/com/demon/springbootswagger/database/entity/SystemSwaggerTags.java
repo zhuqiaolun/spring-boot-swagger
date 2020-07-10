@@ -29,6 +29,12 @@ public class SystemSwaggerTags extends Model<SystemSwaggerTags> {
     private Integer stId;
 
     /**
+     * 项目名
+     */
+    @TableField("st_project")
+    private String stProject;
+
+    /**
      * 标签名称
      */
     @TableField("st_name")
@@ -39,6 +45,12 @@ public class SystemSwaggerTags extends Model<SystemSwaggerTags> {
      */
     @TableField("st_description")
     private String stDescription;
+
+    /**
+     * 标签备注
+     */
+    @TableField("st_remark")
+    private String stRemark;
 
     @TableField("st_createtime")
     private Date stCreatetime;

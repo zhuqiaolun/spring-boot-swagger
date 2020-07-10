@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/root.html">
+<head>
+    <title>首页</title>
+    <base th:href="@{/}">
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+    <div style="padding:15px;">
+        欢迎进入 swagger 管理平台
+    </div>
+</section>
+</body>
+</html>

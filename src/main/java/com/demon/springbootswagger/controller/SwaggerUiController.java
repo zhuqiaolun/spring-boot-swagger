@@ -1,5 +1,7 @@
 package com.demon.springbootswagger.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demon.springbootswagger.database.entity.SystemSwaggerInfo;
 import com.demon.springbootswagger.database.entity.SystemSwaggerTags;
 import com.demon.springbootswagger.database.entity.SystemSwaggerUrl;
@@ -13,12 +15,13 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,8 +31,8 @@ import java.util.List;
  * @Date: 2020/6/30 11:23
  */
 @Controller
-@RequestMapping(value = "swagger")
-public class SwaggerController {
+@RequestMapping(value = "swagger-ui")
+public class SwaggerUiController {
 
     @Resource
     private SystemSwaggerInfoService systemSwaggerInfoService;
@@ -40,19 +43,32 @@ public class SwaggerController {
     @Resource
     private SystemSwaggerUrlService systemSwaggerUrlService;
 
-    @GetMapping
-    public String index() {
-        return "swagger-ui/swagger";
+    @GetMapping(value = "index{siId}")
+    public String index(@PathVariable String siId, Model model) {
+        model.addAttribute("index","index"+siId);
+        return "swagger-ui/swagger-ui";
     }
 
     /**
      * swagger 加载初始数据
      * @return 返回
      */
-    @GetMapping(value = "data.json")
+    @GetMapping(value = "index{siId}/data.json")
     public @ResponseBody
-    Object getJsonData() throws JsonProcessingException {
-        SystemSwaggerInfo systemSwaggerInfo = new LinkedList<>(systemSwaggerInfoService.list()).getLast();
+    Object getJsonData(@PathVariable String siId) throws JsonProcessingException {
+        //查询DB数据
+        SystemSwaggerInfo systemSwaggerInfo =  systemSwaggerInfoService.getById(siId);
+        QueryWrapper<SystemSwaggerTags> systemSwaggerTagsQueryWrapper = new QueryWrapper<>();
+        systemSwaggerTagsQueryWrapper.setEntity(new SystemSwaggerTags().setStProject(siId));
+        List<SystemSwaggerTags> systemSwaggerTagsList = systemSwaggerTagsService.list(systemSwaggerTagsQueryWrapper);
+        JSONObject swaggerTagsMap = new JSONObject(true);
+        if(systemSwaggerTagsList != null && systemSwaggerTagsList.size() > 0){
+            systemSwaggerTagsList.forEach(swaggerTags -> swaggerTagsMap.put(String.valueOf(swaggerTags.getStId()),swaggerTags.getStName()));
+        }
+        QueryWrapper<SystemSwaggerUrl> systemSwaggerUrlQueryWrapper = new QueryWrapper<>();
+        systemSwaggerUrlQueryWrapper.setEntity(new SystemSwaggerUrl().setSuProject(siId));
+        List<SystemSwaggerUrl> systemSwaggerUrlList = systemSwaggerUrlService.list(systemSwaggerUrlQueryWrapper);
+        //组装数据
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode dataJson = jsonNodeFactory.objectNode();
         dataJson.put("swagger", "2.0");
@@ -71,9 +87,9 @@ public class SwaggerController {
         ;
         dataJson.put("host", systemSwaggerInfo.getSiServerhost() + ":" + systemSwaggerInfo.getSiServerport());
         dataJson.put("basePath", "/" + systemSwaggerInfo.getSiServerpath());
-        dataJson.putArray("tags").addAll(getTags());
+        dataJson.putArray("tags").addAll(getTags(systemSwaggerTagsList));
         dataJson.set("schemes", new ObjectMapper().readValue(systemSwaggerInfo.getSiSchemes(), ArrayNode.class));
-        dataJson.putObject("paths").setAll(getPaths());
+        dataJson.putObject("paths").setAll(getPaths(systemSwaggerUrlList,swaggerTagsMap));
         ObjectNode securityDefinitions = dataJson.putObject("securityDefinitions");
         securityDefinitions.putObject("api_key").put("type", "apiKey").put("name", "api_key").put("in", "header");
         return dataJson;
@@ -82,11 +98,10 @@ public class SwaggerController {
     /**
      * 添加 swagger 标签
      */
-    private ArrayNode getTags() {
+    private ArrayNode getTags(List<SystemSwaggerTags> systemSwaggerTagsList) {
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ArrayNode arrayNode = jsonNodeFactory.arrayNode();
-        List<SystemSwaggerTags> systemSwaggerTagsList = systemSwaggerTagsService.list();
-        if(systemSwaggerTagsList != null && systemSwaggerTagsList.size() > 0){
+       if(systemSwaggerTagsList != null && systemSwaggerTagsList.size() > 0){
             systemSwaggerTagsList.forEach(systemSwaggerTags ->{
                 ObjectNode objectNode = jsonNodeFactory.objectNode();
                 objectNode.put("name", systemSwaggerTags.getStName()).put("description", systemSwaggerTags.getStDescription());
@@ -99,15 +114,15 @@ public class SwaggerController {
     /**
      * 添加 swagger 请求
      */
-    private ObjectNode getPaths() {
+    private ObjectNode getPaths(  List<SystemSwaggerUrl> systemSwaggerUrlList,JSONObject swaggerTagsMap) {
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode paths = jsonNodeFactory.objectNode();
-        List<SystemSwaggerUrl> systemSwaggerUrls = systemSwaggerUrlService.list();
-        if (systemSwaggerUrls != null && systemSwaggerUrls.size() > 0) {
-            systemSwaggerUrls.forEach(systemSwaggerUrl -> {
+
+        if (systemSwaggerUrlList != null && systemSwaggerUrlList.size() > 0) {
+            systemSwaggerUrlList.forEach(systemSwaggerUrl -> {
                 try {
                     ObjectNode jsonNodes = paths.putObject("/" + systemSwaggerUrl.getSuUrl()).putObject(systemSwaggerUrl.getSuMethod());
-                    jsonNodes.putArray("tags").add(systemSwaggerUrl.getSuTags());
+                    jsonNodes.putArray("tags").add(swaggerTagsMap.getString(systemSwaggerUrl.getSuTags()));
                     jsonNodes.put("summary", systemSwaggerUrl.getSuSummary());
                     jsonNodes.put("description", systemSwaggerUrl.getSuDescription());
                     jsonNodes.put("operationId", systemSwaggerUrl.getSuOperationid());
