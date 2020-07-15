@@ -45,3 +45,13 @@ spring:
     prefix: classpath:/templates/
   freemarker:
     checkTemplateLocation: false
+
+swagger:
+  consumes:
+    - "application/json"
+    - "application/xml"
+    - "multipart/form-data"
+    - "application/x-www-form-urlencoded"
+  produces:
+    - "application/json"
+    - "application/xml"

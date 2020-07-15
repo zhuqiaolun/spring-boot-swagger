@@ -47,10 +47,13 @@ public class SystemSwaggerInfo extends Model<SystemSwaggerInfo> {
     private String siDescription;
 
     /**
-     * 请求模式
+     * 请求协议
      */
-    @TableField("si_schemes")
-    private String siSchemes;
+    @TableField("si_schemes_http")
+    private boolean siSchemeshttp;
+
+    @TableField("si_schemes_https")
+    private boolean siSchemeshttps;
 
     /**
      * HostAddress

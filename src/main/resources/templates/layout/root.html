@@ -2,7 +2,7 @@
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">spring-boot-swagger</title>
+        <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">spring-boot-swagger</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,13 +18,13 @@
                     </div>
                     <ul class="layui-nav layui-layout-left">
                         <li class="layui-nav-item">
-                            <a href="" th:href="@{/swagger}">项目</a>
+                            <a href="" th:href="@{/info}">项目</a>
                         </li>
                         <li class="layui-nav-item">
                             <a href="" th:href="@{/tags}">标签</a>
                         </li>
                         <li class="layui-nav-item">
-                            <a href="" th:href="@{/config}">配置</a>
+                            <a href="" th:href="@{/url}">配置</a>
                         </li>
                         <li class="layui-nav-item">
                             <a href="" th:href="@{/demo}">示例</a>
@@ -48,6 +48,7 @@
         <script th:src="@{/jquery/jquery-2.1.4.min.js}"></script>
         <script th:src="@{/jquery/jqthumb.js}"></script>
         <script th:src="@{/layui-v2.5.5/layui.all.js}"></script>
+        <script th:src="@{/common/common.js}"></script>
         <section layout:fragment="script"><!-- script区域 --></section>
     </body>
 </html>

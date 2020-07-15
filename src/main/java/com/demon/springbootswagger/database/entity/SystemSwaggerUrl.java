@@ -53,8 +53,6 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     @TableField("su_method")
     private String suMethod;
 
-
-
     /**
      * 标题
      */
@@ -74,7 +72,7 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     private String suOperationid;
 
     /**
-     * 请求参数类型
+     * 请求参数类型[媒体格式]
      */
     @TableField("su_consumes")
     private String suConsumes;
@@ -107,7 +105,7 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
      * 是否过时
      */
     @TableField("su_deprecated")
-    private Byte suDeprecated;
+    private Boolean suDeprecated;
 
     /** DateTimeFormat页面写入数据库时格式化，JSONField 数据库导出页面时json格式化 */
     @TableField("su_createtime")

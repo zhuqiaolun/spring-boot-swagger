@@ -68,9 +68,10 @@ public class SwaggerUiController {
         QueryWrapper<SystemSwaggerUrl> systemSwaggerUrlQueryWrapper = new QueryWrapper<>();
         systemSwaggerUrlQueryWrapper.setEntity(new SystemSwaggerUrl().setSuProject(siId));
         List<SystemSwaggerUrl> systemSwaggerUrlList = systemSwaggerUrlService.list(systemSwaggerUrlQueryWrapper);
-        //组装数据
+        //初始
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode dataJson = jsonNodeFactory.objectNode();
+        //组装数据
         dataJson.put("swagger", "2.0");
         ObjectNode info = dataJson.putObject("info");
         info.put("termsOfService", "http://swagger.io/terms/")
@@ -86,12 +87,14 @@ public class SwaggerUiController {
             .put("url","http://www.apache.org/licenses/LICENSE-2.0.html")
         ;
         dataJson.put("host", systemSwaggerInfo.getSiServerhost() + ":" + systemSwaggerInfo.getSiServerport());
-        dataJson.put("basePath", "/" + systemSwaggerInfo.getSiServerpath());
+        dataJson.put("basePath", systemSwaggerInfo.getSiServerpath());
         dataJson.putArray("tags").addAll(getTags(systemSwaggerTagsList));
-        dataJson.set("schemes", new ObjectMapper().readValue(systemSwaggerInfo.getSiSchemes(), ArrayNode.class));
+        ArrayNode schemes = jsonNodeFactory.arrayNode();
+        schemes = systemSwaggerInfo.isSiSchemeshttp() ? schemes.add("http"):schemes;
+        schemes = systemSwaggerInfo.isSiSchemeshttps() ? schemes.add("https"):schemes;
+        dataJson.set("schemes",schemes);
         dataJson.putObject("paths").setAll(getPaths(systemSwaggerUrlList,swaggerTagsMap));
-        ObjectNode securityDefinitions = dataJson.putObject("securityDefinitions");
-        securityDefinitions.putObject("api_key").put("type", "apiKey").put("name", "api_key").put("in", "header");
+        dataJson.set("securityDefinitions", new ObjectMapper().readTree(systemSwaggerInfo.getSiSecuritydefinitions()));
         return dataJson;
     }
 
@@ -121,7 +124,7 @@ public class SwaggerUiController {
         if (systemSwaggerUrlList != null && systemSwaggerUrlList.size() > 0) {
             systemSwaggerUrlList.forEach(systemSwaggerUrl -> {
                 try {
-                    ObjectNode jsonNodes = paths.putObject("/" + systemSwaggerUrl.getSuUrl()).putObject(systemSwaggerUrl.getSuMethod());
+                    ObjectNode jsonNodes = paths.putObject(systemSwaggerUrl.getSuUrl()).putObject(systemSwaggerUrl.getSuMethod());
                     jsonNodes.putArray("tags").add(swaggerTagsMap.getString(systemSwaggerUrl.getSuTags()));
                     jsonNodes.put("summary", systemSwaggerUrl.getSuSummary());
                     jsonNodes.put("description", systemSwaggerUrl.getSuDescription());

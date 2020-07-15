@@ -7,6 +7,8 @@ import com.demon.springbootswagger.database.dao.SystemSwaggerUrlMapper;
 import com.demon.springbootswagger.database.entity.SystemSwaggerUrl;
 import com.demon.springbootswagger.database.service.SystemSwaggerUrlService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @since 2020-07-02
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 public class SystemSwaggerUrlServiceImpl extends ServiceImpl<SystemSwaggerUrlMapper, SystemSwaggerUrl> implements SystemSwaggerUrlService {
 
     @Override

@@ -19,24 +19,24 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping(value = "swagger")
+    @GetMapping(value = "info")
     public String swagger() {
-        return "swagger";
+        return "swagger-info/info";
     }
 
     @GetMapping(value = "tags")
     public String tags() {
-        return "tags";
+        return "swagger-tags/tags";
     }
 
-    @GetMapping(value = "config")
-    public String config() {
-        return "config";
+    @GetMapping(value = "url")
+    public String url() {
+        return "swagger-url/url";
     }
 
     @GetMapping(value = "demo")
     public String demo() {
-        return "demo";
+        return "help/demo_data";
     }
 
 }

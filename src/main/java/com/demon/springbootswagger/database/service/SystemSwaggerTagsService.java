@@ -32,4 +32,11 @@ public interface SystemSwaggerTagsService extends IService<SystemSwaggerTags> {
      * @return 返回 map  keu为id
      */
     JSONObject getSwaggerTagsMapById(String siId);
+
+
+    /**
+     * 删除标签，以及 该标签下的URL
+     * @param stId 标签ID
+     */
+    void deleteTagsById(String stId);
 }

@@ -20,4 +20,10 @@ public interface SystemSwaggerInfoService extends IService<SystemSwaggerInfo> {
      */
     JSONArray getInfoListMap();
 
+    /**
+     * 删除项目，以及删除标签，以及删除配置的URL
+     * @param siId 项目ID
+     */
+    void deleteInfoById(String siId);
+
 }

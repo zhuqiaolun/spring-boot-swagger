@@ -1,0 +1,45 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div style="margin: 15px;">
+    <form action="" class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目</label>
+            <div class="layui-input-block">
+                <label>
+                    <select name="stProject" id="stProject" lay-search="" >
+                        <option value="">必填，请选择项目</option>
+                        <option value="" th:each="systemSwaggerInfo:${systemSwaggerInfos}"
+                                th:value="${systemSwaggerInfo.siId}"
+                                th:text="${systemSwaggerInfo.siTitle}"
+                                th:selected="${systemSwaggerInfo.siId+'' eq stProject}"
+                        ></option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签</label>
+            <div class="layui-input-block">
+                <input type="text" name="stName" lay-verify="required" autocomplete="off" th:value="${systemSwaggerTags.stName}" placeholder="必填，请输入标签" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="stDescription" lay-verify="required" autocomplete="off" th:value="${systemSwaggerTags.stDescription}" placeholder="必填，请输入描述" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="stRemark" lay-verify="" autocomplete="off" th:value="${systemSwaggerTags.stRemark}" placeholder="选填，请输入备注" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="tags_add" lay-filter="tags_add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</html>

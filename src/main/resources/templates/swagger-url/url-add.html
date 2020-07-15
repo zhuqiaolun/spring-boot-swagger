@@ -1,0 +1,100 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div style="margin: 15px;">
+    <form action="" class="layui-form" lay-filter="urlFormFilter">
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目</label>
+            <div class="layui-input-block">
+                <label>
+                    <select name="suProject" id="suProject" lay-search="" lay-filter="suProjectSelectAdd">
+                        <option value="">必填，请选择项目</option>
+                        <option value="" th:each="systemSwaggerInfo:${systemSwaggerInfos}"
+                                th:value="${systemSwaggerInfo.siId}"
+                                th:text="${systemSwaggerInfo.siTitle}"
+                                th:selected="${systemSwaggerInfo.siId+'' eq suProject}"
+                        ></option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签</label>
+            <div class="layui-input-block">
+                <label>
+                    <select name="suTags" id="suTagsAdd" lay-search="">
+                        <option value="">标签</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">实例方法名</label>
+            <div class="layui-input-block">
+                <input type="text" name="suOperationid" lay-verify="required" autocomplete="off" th:value="${systemSwaggerUrl.suOperationid}" placeholder="必填，请输入方法名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请求URL</label>
+            <div class="layui-input-block">
+                <input type="text" name="suUrl" lay-verify="required" autocomplete="off" th:value="${systemSwaggerUrl.suUrl}" placeholder="必填，请输入URL，以 / 开头" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">请求方法</label>
+            <div class="layui-input-block">
+                <label>
+                    <select name="suMethod" lay-search="">
+                        <option value="get" th:selected="${systemSwaggerUrl.suMethod eq 'get'}">get</option>
+                        <option value="post" th:selected="${systemSwaggerUrl.suMethod eq 'post'}">post</option>
+                        <option value="put" th:selected="${systemSwaggerUrl.suMethod eq 'put'}">put</option>
+                        <option value="delete" th:selected="${systemSwaggerUrl.suMethod eq 'delete'}">delete</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="suSummary" lay-verify="required" autocomplete="off" th:value="${systemSwaggerUrl.suSummary}" placeholder="必填，请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="suDescription" lay-verify="required" autocomplete="off" th:value="${systemSwaggerUrl.suDescription}" placeholder="必填，请输入描述" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">请求参数</label>
+            <div class="layui-input-block">
+                <textarea name="suParameters" placeholder="选填，请输入请求参数" th:text="${systemSwaggerUrl.suParameters}" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">响应CODE</label>
+            <div class="layui-input-block">
+                <textarea name="suResponses" placeholder="选填，请输入响应CODE" th:text="${systemSwaggerUrl.suResponses}" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">全局变量</label>
+            <div class="layui-input-block">
+                <textarea name="suSecurity" placeholder="选填，请输入全局变量" th:text="${systemSwaggerUrl.suSecurity}" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">有效性</label>
+            <div class="layui-input-block">
+                <input type="radio" name="suDeprecated" th:checked="${systemSwaggerUrl.suDeprecated+'' eq 'false'}" value="false" title="有效" placeholder="有效">
+                <input type="radio" name="suDeprecated" th:checked="${systemSwaggerUrl.suDeprecated+'' eq 'true'}" value="true" title="失效" placeholder="失效">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="url_add" lay-filter="url_add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <input type="hidden" name="suTagsVal" th:value="${systemSwaggerUrl.suTags}" placeholder="临时保存的tags的值">
+    </form>
+</div>
+</html>

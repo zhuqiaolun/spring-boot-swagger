@@ -1,0 +1,85 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div style="margin: 15px;">
+    <form action="" class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siTitle}" placeholder="必填，请输入项目" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="description" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siDescription}" placeholder="必填，请输入描述" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">版本</label>
+                <div class="layui-input-block">
+                    <input type="text" name="version" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siVersion}" placeholder="必填，请输入版本" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">协议</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="schemes_http" value="true" th:if="${systemSwaggerInfo.siSchemeshttp}" lay-skin="primary" title="http" checked="checked" placeholder="协议1">
+                    <input type="checkbox" name="schemes_http" value="true" th:unless="${systemSwaggerInfo.siSchemeshttp}" lay-skin="primary" title="http" placeholder="协议1">
+                    <input type="checkbox" name="schemes_https" value="true" th:if="${systemSwaggerInfo.siSchemeshttps}" lay-skin="primary" title="https" checked="checked"  placeholder="协议2">
+                    <input type="checkbox" name="schemes_https" value="true" th:unless="${systemSwaggerInfo.siSchemeshttps}" lay-skin="primary" title="https"  placeholder="协议2">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="serverhost" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siServerhost}" placeholder="必填，请输入地址" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">端口</label>
+                <div class="layui-input-block">
+                    <input type="number" name="serverport" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siServerport}" placeholder="必填，请输入端口" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">路径</label>
+                <div class="layui-input-block">
+                    <input type="text" name="serverpath" lay-verify="required" autocomplete="off" th:value="${systemSwaggerInfo.siServerpath}" placeholder="必填，请输入路径，以 / 开头" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">全局变量</label>
+                <div class="layui-input-block">
+                    <textarea name="securitydefinitions" placeholder="选填，请输入全局变量" th:text="${systemSwaggerInfo.siSecuritydefinitions}" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="contactname" placeholder="选填，请输入昵称" th:value="${systemSwaggerInfo.siContactName}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="contactemail" placeholder="选填，请输入邮箱" th:value="${systemSwaggerInfo.siContactEmail}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">网址</label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="contacturl" placeholder="选填，请输入网址" th:value="${systemSwaggerInfo.siContactUrl}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="swagger_add" lay-filter="swagger_add">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</html>
