@@ -92,21 +92,7 @@ layui.use(['element', 'table'], function () {
                         form.render();
                         //提交 - 操作
                         form.on('submit(swagger_add)', function (data) {
-                            var obj = data.field;
-                            infoForm({
-                                'title':obj.title,
-                                'description':obj.description,
-                                'version':obj.version,
-                                'schemes_http':obj.schemes_http,
-                                'schemes_https':obj.schemes_https,
-                                'server_host':obj.serverhost,
-                                'server_port':obj.serverport,
-                                'server_path':obj.serverpath,
-                                'security_definitions':obj.securitydefinitions,
-                                'contact_name':obj.contactname,
-                                'contact_email':obj.contactemail,
-                                'contact_url':obj.contacturl
-                            });
+                            infoForm("", data.field);
                             return false;
                         });
                     }
@@ -130,22 +116,7 @@ layui.use(['element', 'table'], function () {
                         form.render();
                         //提交 - 操作
                         form.on('submit(swagger_add)', function (data) {
-                            var obj = data.field;
-                            infoForm({
-                                'siId':siId,
-                                'title':obj.title,
-                                'description':obj.description,
-                                'version':obj.version,
-                                'schemes_http':obj.schemes_http,
-                                'schemes_https':obj.schemes_https,
-                                'server_host':obj.serverhost,
-                                'server_port':obj.serverport,
-                                'server_path':obj.serverpath,
-                                'security_definitions':obj.securitydefinitions,
-                                'contact_name':obj.contactname,
-                                'contact_email':obj.contactemail,
-                                'contact_url':obj.contacturl
-                            });
+                            infoForm(siId, data.field);
                             return false;
                         });
                     }
@@ -184,11 +155,12 @@ layui.use(['element', 'table'], function () {
         });
     };
     //form提交
-    var infoForm = function (jsonParam) {
+    var infoForm = function (siId, jsonParam) {
         $.ajax({
             url: 'swagger/submitSwaggerInfo?t=' + new Date().getTime(),
             type: "POST",
             data: JSON.stringify(jsonParam),
+            headers: {'Content-Type': 'application/json;charset=utf8', 'siId': siId},
             dataType: "json",
             contentType: 'application/json',
             beforeSend: function () {

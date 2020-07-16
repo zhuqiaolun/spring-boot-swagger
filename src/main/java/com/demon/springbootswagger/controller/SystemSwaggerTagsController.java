@@ -109,10 +109,11 @@ public class SystemSwaggerTagsController {
     }
 
     @PostMapping(value = "submitSwaggerTags")
-    public @ResponseBody ResponseBean submitSwaggerTags(@RequestBody JSONObject jsonParam) {
+    public @ResponseBody
+    ResponseBean submitSwaggerTags(HttpServletRequest request, @RequestBody JSONObject jsonParam) {
         ResponseBean responseBean = new ResponseBean();
         try {
-            String stId = jsonParam.getString("stId");
+            String stId = request.getHeader("stId");
             //参数
             SystemSwaggerTags systemSwaggerTags = new SystemSwaggerTags();
             systemSwaggerTags.setStProject(jsonParam.getString("stProject"));

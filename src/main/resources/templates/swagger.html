@@ -6,9 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>spring-boot-swagger</title>
-    <link rel="stylesheet" th:href="@{/swagger-ui/swagger-ui.css}" type="text/css">
-    <link href="" rel="icon" sizes="32x32" th:href="@{/swagger-ui/favicon-32x32.png}" type="image/png"/>
-    <link href="" rel="icon" sizes="16x16" th:href="@{/swagger-ui/favicon-16x16.png}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{/swagger-v7.0.0/swagger-ui.css}" type="text/css">
+    <link href="" rel="icon" sizes="32x32" th:href="@{/swagger-v7.0.0/favicon-32x32.png}" type="image/png"/>
+    <link href="" rel="icon" sizes="16x16" th:href="@{/swagger-v7.0.0/favicon-16x16.png}" type="image/png"/>
     <style>
         html {
             box-sizing: border-box;
@@ -39,8 +39,8 @@
     </div>
 </section>
 <section layout:fragment="script" th:remove="tag">
-    <script src="" th:src="@{/swagger-ui/swagger-ui-bundle.js}"></script>
-    <script src="" th:src="@{/swagger-ui/swagger-ui-standalone-preset.js}"></script>
+    <script src="" th:src="@{/swagger-v7.0.0/swagger-ui-bundle.js}"></script>
+    <script src="" th:src="@{/swagger-v7.0.0/swagger-ui-standalone-preset.js}"></script>
     <script th:inline="javascript">
         var indexId = [[${index}]];
         window.onload = function () {

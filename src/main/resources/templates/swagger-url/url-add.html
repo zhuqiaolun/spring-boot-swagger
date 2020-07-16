@@ -63,6 +63,23 @@
                 <input type="text" name="suDescription" lay-verify="required" autocomplete="off" th:value="${systemSwaggerUrl.suDescription}" placeholder="必填，请输入描述" class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">请求类型</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="" title="" lay-skin="primary" placeholder="请求数据类型" value="true"
+                       th:each="scc:${swaggerConfigConsumes}" th:name="'suConsumes_'+${scc}" th:title="${scc}"
+                       th:checked="${#sets.contains(scSet,scc)}">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">响应类型</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="" title="" lay-skin="primary" placeholder="响应数据类型" value="true"
+                       th:each="scp:${swaggerConfigProduces}" th:name="'suProduces_'+${scp}" th:title="${scp}"
+                       th:checked="${#sets.contains(spSet,scp)}">
+            </div>
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">请求参数</label>
             <div class="layui-input-block">

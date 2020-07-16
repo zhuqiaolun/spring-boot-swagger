@@ -98,13 +98,7 @@ layui.use(['element', 'table'], function () {
                         form.render();
                         //提交 - 操作
                         form.on('submit(tags_add)', function (data) {
-                            var obj = data.field;
-                            tagsForm({
-                                'stProject':obj.stProject,
-                                'stName':obj.stName,
-                                'stDescription':obj.stDescription,
-                                'stRemark':obj.stRemark
-                            });
+                            tagsForm("", data.field);
                             return false;
                         });
                     }
@@ -128,14 +122,7 @@ layui.use(['element', 'table'], function () {
                         form.render();
                         //提交 - 操作
                         form.on('submit(tags_add)', function (data) {
-                            var obj = data.field;
-                            tagsForm({
-                                'stId':stId,
-                                'stProject':obj.stProject,
-                                'stName':obj.stName,
-                                'stDescription':obj.stDescription,
-                                'stRemark':obj.stRemark
-                            });
+                            tagsForm(stId, data.field);
                             return false;
                         });
                     }
@@ -174,13 +161,13 @@ layui.use(['element', 'table'], function () {
         });
     };
     //form提交
-    var tagsForm = function (jsonParam) {
+    var tagsForm = function (stId, jsonParam) {
         $.ajax({
             url: 'tags/submitSwaggerTags?t=' + new Date().getTime(),
             type: "POST",
             data: JSON.stringify(jsonParam),
+            headers: {'Content-Type': 'application/json;charset=utf8', 'stId': stId},
             dataType: "json",
-            contentType: 'application/json',
             beforeSend: function () {
                 layer.load(2);
             },

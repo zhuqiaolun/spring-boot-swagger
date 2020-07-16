@@ -72,13 +72,13 @@ public class SystemSwaggerUrl extends Model<SystemSwaggerUrl> {
     private String suOperationid;
 
     /**
-     * 请求参数类型[媒体格式]
+     * 请求数据类型
      */
     @TableField("su_consumes")
     private String suConsumes;
 
     /**
-     * 返回参数类型
+     * 响应数据类型
      */
     @TableField("su_produces")
     private String suProduces;

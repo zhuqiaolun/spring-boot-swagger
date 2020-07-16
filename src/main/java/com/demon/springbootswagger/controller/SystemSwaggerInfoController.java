@@ -85,10 +85,11 @@ public class SystemSwaggerInfoController {
     }
 
     @PostMapping(value = "submitSwaggerInfo")
-    public @ResponseBody ResponseBean submitSwaggerInfo(@RequestBody JSONObject jsonParam) {
+    public @ResponseBody
+    ResponseBean submitSwaggerInfo(HttpServletRequest request, @RequestBody JSONObject jsonParam) {
         ResponseBean responseBean = new ResponseBean();
         try {
-            String siId = jsonParam.getString("siId");
+            String siId = request.getHeader("siId");
             //参数
             SystemSwaggerInfo systemSwaggerInfo = new SystemSwaggerInfo();
             systemSwaggerInfo.setSiTitle(jsonParam.getString("title"));
@@ -96,13 +97,13 @@ public class SystemSwaggerInfoController {
             systemSwaggerInfo.setSiVersion(jsonParam.getString("version"));
             systemSwaggerInfo.setSiSchemeshttp(jsonParam.getBooleanValue("schemes_http"));
             systemSwaggerInfo.setSiSchemeshttps(jsonParam.getBooleanValue("schemes_https"));
-            systemSwaggerInfo.setSiServerhost(jsonParam.getString("server_host"));
-            systemSwaggerInfo.setSiServerport(Integer.valueOf(jsonParam.getString("server_port")));
-            systemSwaggerInfo.setSiServerpath(jsonParam.getString("server_path"));
-            systemSwaggerInfo.setSiSecuritydefinitions(jsonParam.getString("security_definitions"));
-            systemSwaggerInfo.setSiContactName(jsonParam.getString("contact_name"));
-            systemSwaggerInfo.setSiContactEmail(jsonParam.getString("contact_email"));
-            systemSwaggerInfo.setSiContactUrl(jsonParam.getString("contact_url"));
+            systemSwaggerInfo.setSiServerhost(jsonParam.getString("serverhost"));
+            systemSwaggerInfo.setSiServerport(Integer.valueOf(jsonParam.getString("serverport")));
+            systemSwaggerInfo.setSiServerpath(jsonParam.getString("serverpath"));
+            systemSwaggerInfo.setSiSecuritydefinitions(jsonParam.getString("securitydefinitions"));
+            systemSwaggerInfo.setSiContactName(jsonParam.getString("contactname"));
+            systemSwaggerInfo.setSiContactEmail(jsonParam.getString("contactemail"));
+            systemSwaggerInfo.setSiContactUrl(jsonParam.getString("contacturl"));
             if(StringUtils.isBlank(siId)){
                 systemSwaggerInfo.setSiCreatetime(new Date());
                 //返回值

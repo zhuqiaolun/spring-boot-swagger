@@ -46,7 +46,7 @@ public class SwaggerUiController {
     @GetMapping(value = "index{siId}")
     public String index(@PathVariable String siId, Model model) {
         model.addAttribute("index","index"+siId);
-        return "swagger-ui/swagger-ui";
+        return "swagger";
     }
 
     /**

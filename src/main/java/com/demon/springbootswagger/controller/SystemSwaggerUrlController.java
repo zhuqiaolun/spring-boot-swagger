@@ -19,10 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -88,6 +85,12 @@ public class SystemSwaggerUrlController {
     public ModelAndView getSwaggerUrl(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
+            Set<String> scSet = new HashSet<>();
+            Set<String> spSet = new HashSet<>();
+            List<String> swaggerConfigConsumes = swaggerConfig.getConsumes();
+            modelAndView.addObject("swaggerConfigConsumes", swaggerConfigConsumes);
+            List<String> swaggerConfigProduces = swaggerConfig.getProduces();
+            modelAndView.addObject("swaggerConfigProduces", swaggerConfigProduces);
             List<SystemSwaggerInfo> systemSwaggerInfos = systemSwaggerInfoService.list();
             modelAndView.addObject("systemSwaggerInfos",systemSwaggerInfos);
             String suId = request.getParameter("suId");
@@ -95,9 +98,13 @@ public class SystemSwaggerUrlController {
                 SystemSwaggerUrl systemSwaggerUrl = systemSwaggerUrlService.getById(suId);
                 modelAndView.addObject("suProject",systemSwaggerUrl.getSuProject());
                 modelAndView.addObject("systemSwaggerUrl",systemSwaggerUrl);
+                scSet = new HashSet<>(JSONArray.parseArray(systemSwaggerUrl.getSuConsumes(), String.class));
+                spSet = new HashSet<>(JSONArray.parseArray(systemSwaggerUrl.getSuProduces(), String.class));
             }else {
                 modelAndView.addObject("systemSwaggerUrl",new SystemSwaggerUrl());
             }
+            modelAndView.addObject("scSet", scSet);
+            modelAndView.addObject("spSet", spSet);
             modelAndView.setViewName("swagger-url/url-add");
             return modelAndView;
         } catch (Exception e) {
@@ -106,10 +113,11 @@ public class SystemSwaggerUrlController {
     }
 
     @PostMapping(value = "submitSwaggerUrl")
-    public @ResponseBody ResponseBean submitSwaggerUrl(@RequestBody JSONObject jsonParam) {
+    public @ResponseBody
+    ResponseBean submitSwaggerUrl(HttpServletRequest request, @RequestBody JSONObject jsonParam) {
         ResponseBean responseBean = new ResponseBean();
         try {
-            String suId = jsonParam.getString("suId");
+            String suId = request.getHeader("suId");
             //参数
             SystemSwaggerUrl systemSwaggerUrl = new SystemSwaggerUrl();
             systemSwaggerUrl.setSuProject(jsonParam.getString("suProject"));
@@ -120,8 +128,8 @@ public class SystemSwaggerUrlController {
             systemSwaggerUrl.setSuSummary(jsonParam.getString("suSummary"));
             systemSwaggerUrl.setSuDescription(jsonParam.getString("suDescription"));
             systemSwaggerUrl.setSuDeprecated(jsonParam.getBooleanValue("suDeprecated"));
-            systemSwaggerUrl.setSuConsumes(JSONArray.toJSONString(swaggerConfig.getConsumes()));
-            systemSwaggerUrl.setSuProduces(JSONArray.toJSONString(swaggerConfig.getProduces()));
+            systemSwaggerUrl.setSuConsumes(swaggerConfig.getConsumesList(jsonParam));
+            systemSwaggerUrl.setSuProduces(swaggerConfig.getProducesList(jsonParam));
             systemSwaggerUrl.setSuParameters(jsonParam.getString("suParameters"));
             systemSwaggerUrl.setSuResponses(jsonParam.getString("suResponses"));
             systemSwaggerUrl.setSuSecurity(jsonParam.getString("suSecurity"));

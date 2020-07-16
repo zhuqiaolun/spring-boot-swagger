@@ -47,6 +47,8 @@ spring:
     checkTemplateLocation: false
 
 swagger:
+  consumesPrefix: "suConsumes_"
+  producesPrefix: "suProduces_"
   consumes:
     - "application/json"
     - "application/xml"

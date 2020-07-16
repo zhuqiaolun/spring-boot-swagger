@@ -112,20 +112,7 @@ layui.use(['element', 'table'], function () {
                         });
                         //提交 - 操作
                         form.on('submit(url_add)', function (data) {
-                            var obj = data.field;
-                            urlForm({
-                                'suProject':obj.suProject,
-                                'suTags':obj.suTags,
-                                'suOperationid':obj.suOperationid,
-                                'suUrl':obj.suUrl,
-                                'suMethod':obj.suMethod,
-                                'suSummary':obj.suSummary,
-                                'suDescription':obj.suDescription,
-                                'suParameters':obj.suParameters,
-                                'suResponses':obj.suResponses,
-                                'suSecurity':obj.suSecurity,
-                                'suDeprecated':obj.suDeprecated
-                            });
+                            urlForm("", data.field);
                             return false;
                         });
                     }
@@ -153,21 +140,7 @@ layui.use(['element', 'table'], function () {
                         suProjectSelectEvent(form.val('urlFormFilter').suProject,$("#suTagsAdd"),form.val('urlFormFilter').suTagsVal);
                         //提交 - 操作
                         form.on('submit(url_add)', function (data) {
-                            var obj = data.field;
-                            urlForm({
-                                'suId':suId,
-                                'suProject':obj.suProject,
-                                'suTags':obj.suTags,
-                                'suOperationid':obj.suOperationid,
-                                'suUrl':obj.suUrl,
-                                'suMethod':obj.suMethod,
-                                'suSummary':obj.suSummary,
-                                'suDescription':obj.suDescription,
-                                'suParameters':obj.suParameters,
-                                'suResponses':obj.suResponses,
-                                'suSecurity':obj.suSecurity,
-                                'suDeprecated':obj.suDeprecated
-                            });
+                            urlForm(suId, data.field);
                             return false;
                         });
                     }
@@ -206,13 +179,13 @@ layui.use(['element', 'table'], function () {
         });
     };
     //form提交
-    var urlForm = function (jsonParam) {
+    var urlForm = function (suId, jsonParam) {
         $.ajax({
             url: 'url/submitSwaggerUrl?t=' + new Date().getTime(),
             type: "POST",
             data: JSON.stringify(jsonParam),
+            headers: {'Content-Type': 'application/json;charset=utf8', 'suId': suId},
             dataType: "json",
-            contentType: 'application/json',
             beforeSend: function () {
                 layer.load(2);
             },
@@ -232,7 +205,7 @@ layui.use(['element', 'table'], function () {
             }
         });
     };
-    //下拉框 事件
+    //项目下拉框 显示标签 事件
     var suProjectSelectEvent = function(suProjectId,suTags,suTagsVal){
         $.ajax({
             url: 'tags/list?t=' + new Date().getTime(),
